@@ -68,19 +68,19 @@ WORKDIR /workspace
 
 # Clone the model and deploy the app server
 RUN git clone https://github.com/yahoo/open_nsfw.git
-COPY nsfw/nsfwnet.py /workspace/
-COPY nsfw/nsfwaas.py /workspace/
+COPY nsfwnet.py /workspace/
+COPY nsfwaas.py /workspace/
 
 # Set up Apache
 RUN a2enmod wsgi
 RUN a2dissite 000*
-COPY nsfw/nsfwaas.conf /etc/apache2/sites-available/nsfwaas.conf
-COPY nsfw/config.py /workspace/
+COPY nsfwaas.conf /etc/apache2/sites-available/nsfwaas.conf
+COPY config.py /workspace/
 RUN a2ensite nsfwaas
 
 # Configure supervisord
 RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/log/supervisor
-COPY nsfw/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Expose the webserver
 EXPOSE 80
